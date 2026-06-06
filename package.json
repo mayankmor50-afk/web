@@ -1,0 +1,30 @@
+{
+  "name": "chetna-bhadkare-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@vercel/analytics": "1.3.1",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.23",
+    "next": "16.2.0",
+    "react": "^19",
+    "react-dom": "^19",
+    "three": "0.183.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.9",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5",
+    "tailwindcss": "^4.1.9",
+    "tw-animate-css": "1.3.3",
+    "typescript": "^5"
+  }
+}

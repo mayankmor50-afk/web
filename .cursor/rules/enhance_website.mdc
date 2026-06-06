@@ -1,0 +1,46 @@
+---
+description: Integrate premium forensic motion effects into the landing page
+globs: components/**/*.tsx, app/**/*.tsx
+---
+
+# Website Enhancement Guide
+
+Apply these effects for a premium, forensic feel. Use `cubic-bezier(0.16, 1, 0.3, 1)` for all reveals.
+
+## Global (layout.tsx)
+- Mount `GlobalCherryPetals` (fixed site-wide atmospheric layer, z-index 9)
+- Mount `SmoothScroll` (Lenis) and `CustomCursor` in root layout
+- CustomCursor only on `(pointer: fine)` devices
+
+## Hero
+- Replace `Button` CTAs with `MagneticButton`
+- Stagger reveals with forensic easing
+
+## Diagnosis
+- `NumberScramble` on metric callouts
+- `MagneticButton` on bottom CTA
+
+## Methodology
+- `ClipRevealImage` for phase images
+- IntersectionObserver scroll reveals
+- `MagneticButton` on Phase 1 CTA
+
+## Features
+- `ClipRevealImage` for right-side image
+- Forensic reveal transitions on cards
+
+## How It Works
+- Replace static whale `<img>` with `WhaleSpotlight`
+- Forensic overlay: "Hidden in your database right now — $127,400 / year"
+
+## Metrics
+- `NumberScramble` on before/after values
+
+## Testimonials
+- `ClipRevealImage` on shield image
+
+## CTA
+- `MagneticButton` on primary and secondary buttons
+
+## Navigation
+- Magnetic effect on "Book Audit" button via `useMagnetic`
