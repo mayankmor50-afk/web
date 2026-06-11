@@ -1,7 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { BookingLink } from '@/components/landing/booking-link';
+import { HERO } from '@/lib/site-copy';
 
 export function StickyAuditCta() {
   const [visible, setVisible] = useState(false);
@@ -36,8 +37,9 @@ export function StickyAuditCta() {
   if (!visible) return null;
 
   return (
-    <BookingLink
-      className="sticky-audit-cta btn-primary"
+    <Link
+      href="/audit"
+      className="sticky-audit-cta btn-primary font-body"
       style={{
         position: 'fixed',
         bottom: 'max(20px, env(safe-area-inset-bottom))',
@@ -48,7 +50,7 @@ export function StickyAuditCta() {
         boxShadow: '0 8px 32px rgba(0,0,0,0.45)',
       }}
     >
-      Book the Audit →
-    </BookingLink>
+      {HERO.ctaLabel}
+    </Link>
   );
 }

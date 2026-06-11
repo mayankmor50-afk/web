@@ -6,57 +6,62 @@ export const IMAGE_NARRATIVE = {
   hero: {
     code: '01',
     label: 'Second-sale margin',
-    meaning: 'Repeat purchases — not acquisition — carry gross profit.',
+    meaning: 'Repeat purchases carry gross profit.',
   },
   bridge: {
     code: '02',
     label: 'Retention span',
-    meaning: 'Acquisition spend on one shore. Compounding revenue on the other.',
+    meaning: 'Acquisition on one shore. Compounding on the other.',
   },
   method: {
     code: '03',
     label: 'Compound phase',
-    meaning: 'Systems that stack — month two starts ahead of month one.',
+    meaning: 'Systems that stack month over month.',
   },
   whale: {
     code: '04',
     label: 'Below the surface',
-    meaning: '65% of DTC revenue lives in existing buyers most brands ignore.',
+    meaning: 'Lever value hiding in the customer file.',
   },
   shield: {
     code: '05',
     label: 'Margin protected',
-    meaning: 'Fixed scope. Fixed fee. No retainer bleed.',
+    meaning: 'Fixed scope. No retainer bleed.',
   },
   phaseAudit: {
     code: '05a',
     label: 'Forensic read',
-    meaning: 'Every lever in your database, ranked in dollars.',
+    meaning: 'Every lever ranked in dollars.',
   },
   phaseBuild: {
     code: '05b',
     label: 'Locked build',
-    meaning: 'Top 2–3 levers shipped — win-back, RFM, flows.',
+    meaning: 'Top levers shipped — win-back, RFM, flows.',
   },
   phaseCompound: {
     code: '05c',
     label: 'Compounding layer',
-    meaning: 'Monthly signal on what moved and what it is worth.',
+    meaning: 'Monthly signal on what moved.',
   },
   about: {
     code: '06',
     label: 'Direct line',
-    meaning: 'One strategist on your data. No agency layer.',
+    meaning: 'One strategist. Room for what compounds.',
+  },
+  connection: {
+    code: '05d',
+    label: 'The partnership',
+    meaning: 'Your file — one thread to the work.',
   },
   faq: {
     code: '07',
     label: 'Customer graph',
-    meaning: 'Every question maps to a revenue lever in your file.',
+    meaning: 'Every question maps to a revenue lever.',
   },
   cta: {
     code: '08',
     label: 'Step one',
-    meaning: 'The audit is the first climb — everything else follows the map.',
+    meaning: 'The audit is the first climb.',
   },
 } as const;
 

@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { shouldInstantReveal } from '@/lib/motion-policy';
 
 /**
  * NumberScramble — forensic digit decode on reveal
@@ -19,7 +20,12 @@ export function NumberScramble({
   const [started, setStarted] = useState(false);
   const chars = '0123456789$%→.x-+';
 
+  useLayoutEffect(() => {
+    if (shouldInstantReveal()) setStarted(true);
+  }, []);
+
   useEffect(() => {
+    if (shouldInstantReveal()) return;
     const el = ref.current;
     if (!el) return;
 

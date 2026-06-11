@@ -1,19 +1,28 @@
 /**
- * Live booking link — set in .env.local:
- * NEXT_PUBLIC_BOOKING_URL=https://calendly.com/your-link
+ * Booking flow:
+ * - Primary CTAs → /audit (on-site audit page)
+ * - Schedule CTA on /audit → Cal.com when NEXT_PUBLIC_BOOKING_URL is set
  */
+export const AUDIT_PAGE_PATH = '/audit';
+
 export const BOOKING_URL = process.env.NEXT_PUBLIC_BOOKING_URL?.trim() ?? '';
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ?? '';
 
 export function isBookingLive(): boolean {
   return BOOKING_URL.startsWith('http');
 }
 
-/** External Calendly when configured; otherwise scroll fallback to offer section */
-export function bookingHref(): string {
-  return isBookingLive() ? BOOKING_URL : '#audit';
+/** All "Book the Audit" buttons — always land on the audit page first */
+export function bookingLinkProps(): {
+  href: string;
+  target?: string;
+  rel?: string;
+} {
+  return { href: AUDIT_PAGE_PATH };
 }
 
-export function bookingLinkProps(): {
+/** Schedule on /audit — external Cal.com or mailto when not configured */
+export function scheduleLinkProps(): {
   href: string;
   target?: string;
   rel?: string;
@@ -25,5 +34,18 @@ export function bookingLinkProps(): {
       rel: 'noopener noreferrer',
     };
   }
-  return { href: '#audit' };
+
+  if (CONTACT_EMAIL) {
+    return {
+      href: `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Retention Audit — booking request')}`,
+    };
+  }
+
+  return { href: AUDIT_PAGE_PATH };
+}
+
+export function scheduleCtaLabel(): string {
+  if (isBookingLive()) return 'Schedule on Cal.com →';
+  if (CONTACT_EMAIL) return 'Email to book →';
+  return 'Request the audit →';
 }

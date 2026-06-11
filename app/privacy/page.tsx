@@ -22,8 +22,8 @@ export default function PrivacyPage() {
           or cross-site tracking for advertising.
         </li>
         <li>
-          <strong>Booking information.</strong> When you schedule via Calendly, you provide
-          information directly to that platform (name, email, etc.) under Calendly&apos;s privacy
+          <strong>Booking information.</strong> When you schedule via Cal.com, you provide
+          information directly to that platform (name, email, etc.) under Cal.com&apos;s privacy
           policy.
         </li>
         <li>

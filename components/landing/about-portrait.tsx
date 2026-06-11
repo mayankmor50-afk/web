@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { BRAND_IMAGES } from '@/lib/image-framing';
+import { ABOUT } from '@/lib/site-copy';
 
 /**
  * Reserved portrait slot — add your photo later as:
@@ -48,7 +49,7 @@ export function AboutPortrait() {
       </div>
       <div className="about-portrait__rule" aria-hidden="true" />
       <p className="about-portrait__caption font-body">
-        Forensic retention strategy for DTC brands doing $100k–$4M/month.
+        {ABOUT.portraitCaption}
       </p>
     </div>
   );

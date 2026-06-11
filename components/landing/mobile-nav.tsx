@@ -12,7 +12,7 @@ interface MobileNavProps {
 const links = [
   { href: '#results', label: 'Results' },
   { href: '#process', label: 'Process' },
-  { href: '#audit', label: 'Audit' },
+  { href: '/audit', label: 'Audit' },
 ];
 
 export function MobileNav({ open, onClose }: MobileNavProps) {
@@ -70,7 +70,9 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
         </a>
       ))}
       <BookingLink
-        onClick={onClose}
+        variant="primary"
+        placement="top-end"
+        onNavigate={onClose}
         className="font-body"
         style={{
           marginTop: 24,

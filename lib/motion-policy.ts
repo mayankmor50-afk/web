@@ -19,7 +19,16 @@ export function isTouchPrimaryDevice() {
   return coarse && !fine;
 }
 
-/** Skip scroll-hide animations — real touch devices or narrow viewports */
+/** Figma html-to-design capture — force full visible state (no scroll-hide) */
+export function isFigmaCaptureMode() {
+  if (typeof window === 'undefined') return false;
+  return (
+    window.location.hash.includes('figmacapture=') ||
+    window.location.search.includes('figma=1')
+  );
+}
+
+/** Skip scroll-hide animations — touch devices, narrow viewports, or Figma capture */
 export function shouldInstantReveal() {
-  return isMobileViewport() || isTouchPrimaryDevice();
+  return isFigmaCaptureMode() || isMobileViewport() || isTouchPrimaryDevice();
 }

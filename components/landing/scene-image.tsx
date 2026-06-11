@@ -31,6 +31,7 @@ export function SceneImage({
       alt={alt}
       fill
       priority={priority}
+      loading={priority ? 'eager' : undefined}
       quality={IMAGE_QUALITY}
       sizes={sizes}
       className={className}

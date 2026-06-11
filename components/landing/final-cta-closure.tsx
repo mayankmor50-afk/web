@@ -6,9 +6,9 @@ import { shouldInstantReveal } from '@/lib/motion-policy';
 import { isEmailLive, isLinkedInLive, mailtoHref, LINKEDIN_URL } from '@/lib/contact';
 
 const navLinks = [
-  { href: '#results', label: 'Results' },
-  { href: '#process', label: 'Process' },
-  { href: '#audit', label: 'The offer' },
+  { href: '/#results', label: 'Results' },
+  { href: '/#process', label: 'Process' },
+  { href: '/audit', label: 'The offer' },
 ] as const;
 
 function ClosureLink({
@@ -33,6 +33,13 @@ function ClosureLink({
       <a href={href} className={className}>
         {children}
       </a>
+    );
+  }
+  if (href.startsWith('/#')) {
+    return (
+      <Link href={href} className={className}>
+        {children}
+      </Link>
     );
   }
   return (

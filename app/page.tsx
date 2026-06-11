@@ -6,11 +6,7 @@ import { SplitLinesReveal, TextReveal } from '@/components/effects/text-reveal';
 import {
   FindingLine,
   ForensicDelta,
-  ForensicFigure,
-  ForensicPercent,
-  ForensicPrice,
   ForensicQuote,
-  ForensicRangeStat,
   ForensicStat,
   ForensicStep,
   FaqExhibitTag,
@@ -33,9 +29,24 @@ import { useHeroScroll } from '@/components/effects/use-hero-scroll';
 import { SITE } from '@/lib/site-tokens';
 import { SceneImage } from '@/components/landing/scene-image';
 import { SceneNote } from '@/components/landing/scene-note';
+import { FaqGraphAtmosphere } from '@/components/landing/faq-graph-atmosphere';
 import { AboutPortrait } from '@/components/landing/about-portrait';
+import { HorizonScene } from '@/components/landing/horizon-scene';
 import { BRAND_IMAGES, IMAGE_FRAMES, phaseFrame } from '@/lib/image-framing';
 import { revealClass } from '@/lib/reveal-class';
+import {
+  ABOUT,
+  FINAL_CTA,
+  HERO,
+  HERO_STATS,
+  HOME_FAQ,
+  HOME_FAQ_SECTION,
+  METHOD,
+  OFFER,
+  PROBLEM,
+  PROOF,
+  SITE_IDENTITY,
+} from '@/lib/site-copy';
 import type { RefObject } from 'react';
 
 const FluidMeshOverlay = dynamic(
@@ -43,8 +54,7 @@ const FluidMeshOverlay = dynamic(
   { ssr: false }
 );
 
-const PROOF_HEADLINE_LINES: string[] = ['$502k found', 'in a single', 'brand audit.'];
-const OFFER_HEADLINE_LINES: string[] = ['Fixed price.', 'Fixed deliverable.', 'No retainer trap.'];
+const OFFER_PHASE_IMAGES = [BRAND_IMAGES.audit, BRAND_IMAGES.encrypted, BRAND_IMAGES.permissions] as const;
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
 
@@ -75,10 +85,10 @@ function Navigation() {
     >
       <div>
         <div className="font-display" style={{ fontSize: 15, color: SITE.cream, fontWeight: 700, letterSpacing: '0.01em' }}>
-          Chetna Bhadkare
+          {SITE_IDENTITY.name}
         </div>
         <div className="font-body" style={{ fontSize: 11, color: SITE.dim, letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: 2 }}>
-          Retention & Profitability Strategist
+          {SITE_IDENTITY.title}
         </div>
         <LiveClock />
       </div>
@@ -86,24 +96,28 @@ function Navigation() {
         {[
           { label: 'Results', href: '#results' },
           { label: 'Process', href: '#process' },
-          { label: 'Audit', href: '#audit' },
+          { label: 'Audit', href: '/audit' },
         ].map(link => (
           <MagneticNavLink key={link.href} href={link.href}>{link.label}</MagneticNavLink>
         ))}
         <BookingLink
-          ref={auditCta.ref as RefObject<HTMLAnchorElement>}
+          ref={auditCta.ref as RefObject<HTMLButtonElement>}
+          variant="outline"
+          label="Book a call"
+          showPlus={false}
+          placement="bottom-end"
           className="font-body"
           style={{
             fontSize: 13, fontWeight: 600,
             color: SITE.amber, border: `1px solid ${SITE.amber}`, padding: '8px 20px',
-            textDecoration: 'none', letterSpacing: '0.04em', transition: 'all 0.2s',
+            letterSpacing: '0.04em', transition: 'all 0.2s',
             display: 'inline-block',
             ...auditCta.style,
           }}
           onMouseEnter={e => { e.currentTarget.style.background = SITE.amber; e.currentTarget.style.color = SITE.bg; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = SITE.amber; }}
         >
-          Book the Audit
+          Book a call
         </BookingLink>
       </div>
       <button
@@ -198,7 +212,7 @@ function HeroSection() {
 
         <TextReveal delay={80}>
           <div className="section-eyebrow" style={{ marginBottom: 24 }}>
-            DTC Retention Strategy · $100k–$4M/month
+            {HERO.eyebrow}
           </div>
         </TextReveal>
 
@@ -211,8 +225,8 @@ function HeroSection() {
           letterSpacing: '-0.02em',
         }}>
           <SplitLinesReveal
-            lines={['Your second sale', 'is where', 'margin lives.']}
-            highlightIndex={2}
+            lines={[...HERO.headlineLines]}
+            highlightIndex={HERO.headlineHighlightIndex}
             lineDelay={140}
             markHighlight
             baseStyle={{ color: '#E8E2D9' }}
@@ -226,42 +240,25 @@ function HeroSection() {
             color: '#9A9590',
             lineHeight: 1.7,
             maxWidth: 520,
-            margin: '0 0 40px',
+            margin: '0 0 32px',
           }}>
-            We find the <ForensicFigure>$200k–$1.4M</ForensicFigure> sitting in your existing customer database
-            and build the system that keeps capturing it.
+            {HERO.subhead}
           </p>
         </TextReveal>
 
-        <TextReveal delay={780}>
-          <BookingLink className="btn-primary font-body" style={{ fontSize: 14, padding: '14px 32px' }}>
-            Book the Retention Audit →
-          </BookingLink>
+        <TextReveal delay={700}>
+          <div className="hero-stats">
+            {HERO_STATS.map((stat) => (
+              <ForensicStat key={stat.label} value={stat.value} label={stat.label} />
+            ))}
+          </div>
         </TextReveal>
 
-        {/* Anchor stats — credibility below the fold line */}
-        <div
-          className="hero-stats font-body"
-          style={{
-            display: 'flex',
-            gap: 'clamp(24px, 5vw, 56px)',
-            marginTop: 56,
-            paddingTop: 32,
-            borderTop: '1px solid rgba(255,255,255,0.08)',
-            flexWrap: 'wrap',
-          }}
-        >
-          <ForensicRangeStat
-            low={{ value: 200, suffix: 'k' }}
-            high={{ value: 1.4, suffix: 'M' }}
-            label="Typical audit find"
-          />
-          <ForensicStat value="5–7 days" label="Audit delivered" />
-          <div className="forensic-stat">
-            <ForensicPercent value={80} className="forensic-stat__value" />
-            <div className="forensic-stat__label">Continue after audit</div>
-          </div>
-        </div>
+        <TextReveal delay={820}>
+          <a href="/audit" className="hero-book-call btn-primary font-body" style={{ fontSize: 14, padding: '14px 28px', display: 'inline-block', marginTop: 28 }}>
+            {HERO.ctaLabel}
+          </a>
+        </TextReveal>
       </div>
     </section>
   );
@@ -294,11 +291,7 @@ function ProblemSection() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [ref]);
 
-  const lines = [
-    { stat: 'CAC up 200%+ since 2015.', rest: 'Repeat rate: unchanged.' },
-    { stat: '65% of DTC revenue', rest: 'comes from existing customers. Most brands spend nothing building them.' },
-    { stat: 'Good months don\'t compound.', rest: 'Every month starts from zero.' },
-  ];
+  const lines = PROBLEM.lines;
 
   return (
     <section ref={ref} className="gap-section" style={{ position: 'relative', overflow: 'hidden', background: SITE.bg2 }}>
@@ -307,7 +300,7 @@ function ProblemSection() {
 
         <div className="gap-copy">
           <div className={`section-eyebrow ${revealClass(inView)}`} style={{ marginBottom: 48 }}>
-            The gap
+            {PROBLEM.eyebrow}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
@@ -327,7 +320,7 @@ function ProblemSection() {
             className={`gap-span-caption ${revealClass(inView, 'fade-only')}`}
             style={{ marginTop: 40, transitionDelay: '0.45s' }}
           >
-            Most brands fund acquisition. Few build the bridge to repeat revenue.
+            {PROBLEM.caption}
           </p>
         </div>
 
@@ -404,15 +397,11 @@ function MethodSection() {
     return () => obs.disconnect();
   }, [inView]);
 
-  const steps = [
-    { n: '01', title: 'Diagnose', copy: '7 days in your data. A ranked map of every revenue opportunity, valued in dollars.' },
-    { n: '02', title: 'Build', copy: 'We build the top 2–3 levers. Fixed scope. Fixed price. 60–90 days.' },
-    { n: '03', title: 'Compound', copy: 'Monthly intelligence on what\'s moving, what\'s next, and exactly what it\'s worth.' },
-  ];
+  const steps = METHOD.steps;
 
   return (
-    <section id="process" ref={ref} className="method-section" style={{ background: SITE.bg, overflow: 'hidden' }}>
-      <div className="method-layout">
+    <section id="process" ref={ref} className="method-section" style={{ position: 'relative', background: SITE.bg, overflow: 'hidden' }}>
+      <div className="method-layout" style={{ position: 'relative', zIndex: 1 }}>
 
         <div className="method-visual-col method-visual-col--desktop">
           <div
@@ -455,13 +444,15 @@ function MethodSection() {
             <div
               className={`section-eyebrow method-intro__eyebrow ${revealClass(inView, 'fade-only')}`}
             >
-              How it works
+              {METHOD.eyebrow}
             </div>
 
             <h2 className={`font-display method-intro__headline ${revealClass(inView)}`} style={{
               transitionDelay: '0.1s',
             }}>
-              Three phases.<br />Fixed price.<br />Fixed deliverable.
+              {METHOD.headlineLines.map((line, i) => (
+                <span key={line}>{line}{i < METHOD.headlineLines.length - 1 && <br />}</span>
+              ))}
             </h2>
           </div>
 
@@ -547,11 +538,7 @@ function ProofSection() {
     return () => window.removeEventListener('scroll', handle);
   }, []);
 
-  const cases = [
-    { brand: 'Lily.mk', category: 'Women\'s Apparel', before: '3.7%', after: '36%', label: 'repeat revenue', timeline: '90 days' },
-    { brand: 'Denman Tea', category: 'Consumable', before: '23%', after: '37%', label: 'sustained', timeline: '10 months' },
-    { brand: 'Atlantic Naturals', category: 'Supplements', before: '0%', after: '37%', label: 'retention revenue', timeline: '6 months' },
-  ];
+  const cases = PROOF.caseStudies;
 
   return (
     <section id="results" className="proof-section" style={{ position: 'relative', background: '#060605', overflow: 'hidden' }}>
@@ -590,12 +577,17 @@ function ProofSection() {
           <div style={{ maxWidth: 480 }}>
             <div className={revealClass(textInView, 'fade-only')} style={{
               fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: '#B8873A',
-              letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 24,
+              letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 12,
             }}>
-              Results
+              {PROOF.eyebrow}
             </div>
+            <p className={`font-body ${revealClass(textInView, 'fade-only')}`} style={{
+              fontSize: 14, color: '#6B6560', lineHeight: 1.6, margin: '0 0 24px', maxWidth: 420,
+            }}>
+              {PROOF.lead}
+            </p>
             <GsapSplitHeadline
-              lines={PROOF_HEADLINE_LINES}
+              lines={[...PROOF.headlineLines]}
               highlightLine={2}
               accentFigures
               countUpFigures
@@ -625,8 +617,8 @@ function ProofSection() {
                 <ForensicDelta before={c.before} after={c.after} label={c.label} />
               </div>
             ))}
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: '#4A4440', marginTop: 16, fontStyle: 'italic' }}>
-              These are not projections. They are what happened.
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: '#6B6560', marginTop: 16, fontStyle: 'italic' }}>
+              {PROOF.footnote}
             </p>
           </div>
         </div>
@@ -663,29 +655,10 @@ function OfferSection() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const phases = [
-    {
-      n: '01', name: 'The Retention Audit', price: '$1,000 – $3,000',
-      meta: '5–7 days · One-time · Paid upfront',
-      copy: 'A complete diagnostic. A ranked map of every revenue lever, valued in dollars. Buy this and stop if you want. 80% don\'t.',
-      image: BRAND_IMAGES.audit,
-      note: 'Forensic read',
-    },
-    {
-      n: '02', name: 'The Build Sprint', price: '$1,500 – $8,000',
-      meta: '60–90 days · Fixed scope · 50% upfront',
-      copy: 'I build the top 2–3 levers. Win-back campaign, RFM segmentation, automated flows, retention dashboard. Handed over completely.',
-      image: BRAND_IMAGES.encrypted,
-      note: 'Locked build',
-    },
-    {
-      n: '03', name: 'The Compounding Layer', price: '$1,000 – $4,000 / mo',
-      meta: '3-month minimum · Fixed monthly output',
-      copy: 'Monthly dashboard. One strategic call. Written insight. Only offered after Phase 2 results are visible.',
-      image: BRAND_IMAGES.permissions,
-      note: 'Compounding layer',
-    },
-  ];
+  const phases = OFFER.phases.map((phase, i) => ({
+    ...phase,
+    image: OFFER_PHASE_IMAGES[i],
+  }));
 
   return (
     <section id="audit" className="offer-section" style={{ position: 'relative', background: '#0C0B09', overflow: 'hidden' }}>
@@ -694,7 +667,7 @@ function OfferSection() {
         <div
           ref={shieldWrapRef}
           className="offer-shield-media"
-          style={{ filter: IMAGE_FRAMES.shield.filter }}
+          style={{ filter: IMAGE_FRAMES.shield.filter, opacity: IMAGE_FRAMES.shield.mediaOpacity }}
         >
           <SceneImage
             src={BRAND_IMAGES.shield}
@@ -714,12 +687,12 @@ function OfferSection() {
           fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: '#B8873A',
           letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 24,
         }}>
-          The offer
+          {OFFER.eyebrow}
         </div>
 
         <div style={{ marginBottom: 64, maxWidth: 560 }}>
           <GsapSplitHeadline
-            lines={OFFER_HEADLINE_LINES}
+            lines={[...OFFER.headlineLines]}
             style={{ fontSize: 'clamp(30px, 4vw, 50px)', color: '#E8E2D9' }}
           />
         </div>
@@ -747,11 +720,7 @@ function OfferSection() {
                 <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 20, fontWeight: 700, color: '#E8E2D9', marginBottom: 8 }}>
                   {phase.name}
                 </div>
-                <ForensicPrice value={phase.price} />
-                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: '#6B6560', letterSpacing: '0.08em', marginBottom: 20 }}>
-                  {phase.meta}
-                </div>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#9A9590', lineHeight: 1.7, margin: 0 }}>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#9A9590', lineHeight: 1.7, margin: '8px 0 0' }}>
                   {phase.copy}
                 </p>
               </div>
@@ -761,8 +730,8 @@ function OfferSection() {
 
         {/* Mid-page CTA */}
         <div className={revealClass(inView, 'fade-only')} style={{ textAlign: 'center', marginTop: 56, transitionDelay: '0.6s' }}>
-          <a href="#final-cta" className="btn-primary font-body" style={{ fontSize: 14, padding: '14px 32px' }}>
-            Start with the Audit →
+          <a href="/audit" className="btn-primary font-body" style={{ fontSize: 14, padding: '14px 32px' }}>
+            {OFFER.ctaLabel}
           </a>
         </div>
 
@@ -772,50 +741,15 @@ function OfferSection() {
 }
 
 // ─── SECTION 6: ABOUT ────────────────────────────────────────────────────────
-// Asset: about-connection.png — full-section backdrop; portrait slot sits in front
+// Asset: wildflower-hill.png — warm horizon; portrait + bio in front
 // Intensity: LOW — quiet, human, trust-building
 
 function AboutSection() {
   const { ref, inView } = useInView(0.15);
-  const visualWrapRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const wrap = visualWrapRef.current;
-    if (!wrap) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const onScroll = () => {
-      const section = ref.current;
-      if (!section || reduced) return;
-      const rect = section.getBoundingClientRect();
-      const progress = 1 - rect.top / window.innerHeight;
-      const t = Math.max(0, Math.min(1, progress));
-      const y = t * IMAGE_FRAMES.aboutConnection.parallaxTranslateMax;
-      const scale = IMAGE_FRAMES.aboutConnection.baseScale + t * (IMAGE_FRAMES.aboutConnection.parallaxScaleMax - IMAGE_FRAMES.aboutConnection.baseScale);
-      wrap.style.transform = `translate3d(0, ${y}px, 0) scale(${scale})`;
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [ref]);
 
   return (
-    <section className="about-section" style={{ background: SITE.bg2, overflow: 'hidden' }}>
-      <div className="about-connection-bg" aria-hidden="true">
-        <div
-          ref={visualWrapRef}
-          className="about-connection-media"
-          style={{ filter: IMAGE_FRAMES.aboutConnection.filter }}
-        >
-          <SceneImage
-            src={BRAND_IMAGES.aboutConnection}
-            sizes="100vw"
-            objectFit={IMAGE_FRAMES.aboutConnection.objectFit}
-            objectPosition={IMAGE_FRAMES.aboutConnection.objectPosition}
-          />
-        </div>
-        <div className="about-connection-edge" />
-        <div className="about-connection-scrim" />
-      </div>
+    <section className="about-section" style={{ position: 'relative', background: SITE.bg, overflow: 'hidden' }}>
+      <HorizonScene variant="wildflowerHill" className="about-horizon" />
 
       <div ref={ref} className="about-layout">
 
@@ -826,7 +760,7 @@ function AboutSection() {
 
         <div className={`about-copy ${revealClass(inView)}`} style={{ transitionDelay: '0.15s' }}>
           <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: '#B8873A', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 24 }}>
-            Who does this
+            {ABOUT.eyebrow}
           </div>
 
           <h2 style={{
@@ -834,31 +768,22 @@ function AboutSection() {
             fontSize: 32, fontWeight: 700, color: '#E8E2D9',
             margin: '0 0 16px', lineHeight: 1.2,
           }}>
-            Chetna Bhadkare
+            {SITE_IDENTITY.name}
           </h2>
           <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#B8873A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 24 }}>
-            Retention & Profitability Strategist
+            {SITE_IDENTITY.title}
           </div>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: '#9A9590', lineHeight: 1.8, margin: '0 0 48px' }}>
-            Not an agency. Not a generalist. A focused system for finding what's already
-            in your business and building the infrastructure that keeps capturing it.
-            Works with DTC brands doing $100k–$4M/month in pet food, supplements,
-            skincare, coffee, and haircare.
+            {ABOUT.bio}
           </p>
 
-          {/* Testimonials */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            {[
-              { quote: 'We went from 3.7% to 36% repeat revenue in 90 days. The system runs itself now.', name: 'Lily.mk', role: 'Women\'s Apparel' },
-              { quote: '31% of our revenue is now automated retention. It compounds every month.', name: 'Denman Tea', role: 'Consumable Brand' },
-            ].map((t, i) => (
-              <div key={i} style={{ borderLeft: '1px solid rgba(184,135,58,0.3)', paddingLeft: 20 }}>
-                <ForensicQuote text={t.quote} />
-                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: '#6B6560', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  {t.name} · {t.role}
-                </div>
+            <div style={{ borderLeft: '1px solid rgba(184,135,58,0.3)', paddingLeft: 20 }}>
+              <ForensicQuote text={ABOUT.quote.text} />
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: '#6B6560', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                {ABOUT.quote.attribution} · {ABOUT.quote.role}
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
@@ -894,20 +819,19 @@ function FaqSection() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [ref]);
 
-  const items = [
-    { q: 'What do I get from the audit?', a: 'A ranked map of every retention revenue lever in your business, valued in dollars. Delivered in 5–7 days. Fixed fee, paid upfront.', node: 'Lever map' },
-    { q: 'Do I have to continue after the audit?', a: 'No. About 80% of brands do — because the audit surfaces enough to justify the build. But the audit stands alone.', node: 'Standalone audit' },
-    { q: 'Who is this for?', a: 'DTC brands doing $100k–$4M/month in pet food, supplements, skincare, coffee, and haircare — with enough customer data to diagnose.', node: 'RFM cohorts' },
-    { q: 'How is this different from an agency?', a: 'Fixed scope. Fixed price. No retainer trap. One strategist, forensic focus on retention and gross profit — not brand campaigns.', node: 'Fixed scope' },
-  ];
+  const items = HOME_FAQ;
 
   return (
-    <section ref={ref} className="faq-section section-pad" style={{ position: 'relative', background: SITE.bg2, borderTop: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden' }}>
-      <div className="faq-graph-bg" aria-hidden="true">
+    <section ref={ref} className="faq-section faq-section--integrated section-pad">
+      <div className="faq-graph-bg faq-graph-bg--integrated" aria-hidden="true">
+        <div className="faq-graph-glow faq-graph-glow--primary faq-graph-glow--integrated" />
         <div
           ref={graphWrapRef}
-          className="faq-graph-media"
-          style={{ filter: IMAGE_FRAMES.faqDataGraph.filter }}
+          className="faq-graph-media faq-graph-media--integrated"
+          style={{
+            filter: IMAGE_FRAMES.faqDataGraph.filter,
+            opacity: IMAGE_FRAMES.faqDataGraph.mediaOpacity,
+          }}
         >
           <SceneImage
             src={BRAND_IMAGES.faqDataGraph}
@@ -916,17 +840,17 @@ function FaqSection() {
             objectPosition={IMAGE_FRAMES.faqDataGraph.objectPosition}
           />
         </div>
-        <div className="faq-graph-edge" />
-        <div className="faq-graph-scrim" />
+        <FaqGraphAtmosphere />
+        <div className="faq-graph-edge faq-graph-edge--integrated" />
+        <div className="faq-graph-scrim faq-graph-scrim--integrated" />
         <div className="faq-graph-nodes" aria-hidden="true">
           {items.map((item, i) => (
             <span
               key={item.node}
-              className="faq-graph-node"
+              className={`faq-graph-node${open === i ? ' faq-graph-node--active' : ''}`}
               style={{
                 top: `${22 + i * 17}%`,
                 right: `${14 + (i % 2) * 8}%`,
-                opacity: open === i ? 1 : 0.35,
               }}
             >
               {item.node}
@@ -943,13 +867,20 @@ function FaqSection() {
           fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: '#B8873A',
           letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 12,
         }}>
-          Questions
+          {HOME_FAQ_SECTION.eyebrow}
         </div>
-        <p className={`font-body ${revealClass(inView, 'fade-only')}`} style={{
-          fontSize: 14, color: '#6B6560', lineHeight: 1.65, margin: '0 0 40px', maxWidth: 520,
-          transitionDelay: '0.08s',
+        <h2 className={`font-display ${revealClass(inView)}`} style={{
+          fontSize: 'clamp(28px, 3.5vw, 40px)',
+          color: '#E8E2D9',
+          margin: '0 0 12px',
+          lineHeight: 1.15,
         }}>
-          Every answer ties back to a lever in your customer file — audit scope, build deliverables, or who this is built for.
+          {HOME_FAQ_SECTION.title}
+        </h2>
+        <p className={`font-body ${revealClass(inView, 'fade-only')}`} style={{
+          fontSize: 14, color: '#6B6560', lineHeight: 1.65, margin: '0 0 32px', maxWidth: 480,
+        }}>
+          {HOME_FAQ_SECTION.lead}
         </p>
         {items.map((item, i) => (
           <div key={i} className={revealClass(inView)} style={{
@@ -1025,7 +956,7 @@ function FinalCTASection() {
   }, []);
 
   return (
-    <section id="final-cta" className="final-cta-section" style={{ position: 'relative', background: '#0C0B09', overflow: 'hidden' }}>
+    <section id="final-cta" className="final-cta-section scene-section--integrated">
 
       <div className="cta-scene" aria-hidden="true">
         <div
@@ -1050,25 +981,15 @@ function FinalCTASection() {
       <div className="final-cta-stack site-container section-pad">
         <div ref={ref} className="final-cta-copy">
           <div className={`final-cta-eyebrow font-body ${revealClass(inView, 'fade-only')}`}>
-            Start here
+            {FINAL_CTA.eyebrow}
           </div>
 
           <h2 className={`final-cta-headline ${revealClass(inView)}`} style={{ transitionDelay: '0.1s' }}>
-            The audit is where we start.
+            {FINAL_CTA.headline}
           </h2>
 
-          <p className={`final-cta-body font-body ${revealClass(inView, 'fade-only')}`} style={{ transitionDelay: '0.2s' }}>
-            Most brands find <ForensicFigure>$200,000–$600,000</ForensicFigure> in identifiable gross profit at this stage.
-            Everything else follows from what we find.
-          </p>
-
-          <div className={`final-cta-action ${revealClass(inView, 'fade-only')}`} style={{ transitionDelay: '0.3s' }}>
-            <BookingLink className="btn-primary font-body final-cta-btn">
-              Book the Retention Audit →
-            </BookingLink>
-            <div className="final-cta-meta font-body">
-              Fixed fee · Paid upfront · Delivered in 5–7 days
-            </div>
+          <div className={`final-cta-action ${revealClass(inView, 'fade-only')}`} style={{ transitionDelay: '0.15s' }}>
+            <BookingLink variant="link" label="Book a call" showPlus className="final-cta-book-call" />
           </div>
 
           <SceneNote

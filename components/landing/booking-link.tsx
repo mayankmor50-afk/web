@@ -1,19 +1,17 @@
 'use client';
 
-import { forwardRef, type AnchorHTMLAttributes, type ReactNode } from 'react';
-import { bookingLinkProps } from '@/lib/booking';
+import { forwardRef, type ComponentProps } from 'react';
+import { BookingHoverMenu } from '@/components/landing/booking-hover-menu';
 
-type BookingLinkProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
-  children: ReactNode;
-};
+type BookingLinkProps = ComponentProps<typeof BookingHoverMenu>;
 
-/** Primary audit CTA — opens Calendly when NEXT_PUBLIC_BOOKING_URL is set */
-export const BookingLink = forwardRef<HTMLAnchorElement, BookingLinkProps>(
-  function BookingLink({ children, ...rest }, ref) {
+/** Primary audit CTA — hover menu with email + Cal.com booking */
+export const BookingLink = forwardRef<HTMLButtonElement, BookingLinkProps>(
+  function BookingLink({ children, showPlus = true, variant = 'link', label = 'Book a call', ...rest }, ref) {
     return (
-      <a ref={ref} {...bookingLinkProps()} data-cursor="cta" {...rest}>
+      <BookingHoverMenu ref={ref} showPlus={showPlus} variant={variant} label={label} {...rest}>
         {children}
-      </a>
+      </BookingHoverMenu>
     );
   },
 );

@@ -5,20 +5,14 @@ import 'lenis/dist/lenis.css';
 
 export function SmoothScroll() {
   useEffect(() => {
-    let lenis: {
-      raf: (time: number) => void;
-      destroy: () => void;
-      on: (event: string, callback: () => void) => void;
-      scroll: number;
-      scrollTo: (value: number) => void;
-    } | null = null;
+    let lenis: { raf: (time: number) => void; destroy: () => void; scroll: number; scrollTo: (value: number) => void } | null = null;
     let frameId = 0;
     let cancelled = false;
     let gsapTicker: ((time: number) => void) | null = null;
 
     const initLenis = async () => {
-      const { isTouchPrimaryDevice } = await import('@/lib/motion-policy');
-      if (isTouchPrimaryDevice()) return;
+      const { isTouchPrimaryDevice, isFigmaCaptureMode } = await import('@/lib/motion-policy');
+      if (isTouchPrimaryDevice() || isFigmaCaptureMode()) return;
 
       const Lenis = (await import('lenis')).default;
       const gsap = (await import('gsap')).default;
@@ -27,15 +21,16 @@ export function SmoothScroll() {
 
       gsap.registerPlugin(ScrollTrigger);
 
-      lenis = new Lenis({
+      const instance = new Lenis({
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: 'vertical',
         smoothWheel: true,
         touchMultiplier: 2,
       });
+      lenis = instance;
 
-      lenis.on('scroll', ScrollTrigger.update);
+      instance.on('scroll', ScrollTrigger.update);
 
       ScrollTrigger.scrollerProxy(document.documentElement, {
         scrollTop(value) {
@@ -58,12 +53,12 @@ export function SmoothScroll() {
       ScrollTrigger.refresh();
 
       gsapTicker = (time: number) => {
-        lenis?.raf(time * 1000);
+        instance.raf(time * 1000);
       };
       gsap.ticker.add(gsapTicker);
       gsap.ticker.lagSmoothing(0);
 
-      lenis.on('scroll', () => {
+      instance.on('scroll', () => {
         window.dispatchEvent(new Event('scroll'));
       });
     };
