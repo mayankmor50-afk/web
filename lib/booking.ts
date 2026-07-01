@@ -3,10 +3,11 @@
  * - Primary CTAs → /audit (on-site audit page)
  * - Schedule CTA on /audit → Cal.com when NEXT_PUBLIC_BOOKING_URL is set
  */
+import { CONTACT_EMAIL } from '@/lib/contact';
+
 export const AUDIT_PAGE_PATH = '/audit';
 
 export const BOOKING_URL = process.env.NEXT_PUBLIC_BOOKING_URL?.trim() ?? '';
-export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ?? '';
 
 export function isBookingLive(): boolean {
   return BOOKING_URL.startsWith('http');

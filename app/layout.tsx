@@ -1,6 +1,6 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { DM_Sans, Geist, Geist_Mono, Playfair_Display } from 'next/font/google'
+import { DM_Sans, Geist_Mono, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SakuraThread } from '@/components/atmosphere/sakura-thread'
 import { FilmGrain } from '@/components/atmosphere/film-grain'
@@ -22,11 +22,6 @@ const OG_IMAGE = {
   height: 630,
   alt: 'Chetna Bhadkare — Retention & Profitability Strategist',
 } as const;
-
-const geistSans = Geist({ 
-  subsets: ["latin"],
-  variable: '--font-geist-sans'
-});
 
 const geistMono = Geist_Mono({ 
   subsets: ["latin"],
@@ -99,7 +94,7 @@ export default function RootLayout({
           <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async />
         )}
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${dmSans.variable} font-body antialiased bg-[#0C0B09]`}>
+      <body className={`${geistMono.variable} ${playfair.variable} ${dmSans.variable} font-body antialiased bg-[#0C0B09]`}>
         <SkipLink />
         <TouchDeviceMark />
         <AmbientSoundProvider>

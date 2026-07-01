@@ -138,8 +138,7 @@ function Navigation() {
 // ─── SECTION 1: HERO ─────────────────────────────────────────────────────────
 // Asset: hero video + cherry-tree.png poster/fallback
 
-const HERO_VIDEO_SRC =
-  'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4';
+const HERO_VIDEO_SRC = '/images/hero.mp4';
 
 function HeroSection() {
   const { translateY } = useHeroScroll();

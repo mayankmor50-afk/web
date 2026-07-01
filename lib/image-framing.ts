@@ -64,23 +64,6 @@ export const BRAND_IMAGES = {
   wildflowerHill: '/images/wildflower-hill.png',
 } as const;
 
-/** Where each image lives — retention narrative, not decoration */
-export const ASSET_MAP = {
-  cherryTree: 'Hero + Method — repeat revenue compounds (neutral luminance)',
-  bridge: 'The gap — acquisition ↔ retention (dark: void between shores)',
-  whale: 'Proof — hidden repeat revenue (bright: spotlight reveal)',
-  shield: 'Offer — margin protected (dark: weight behind cards)',
-  audit: 'Phase 01 — forensic read',
-  encrypted: 'Phase 02 — locked-scope build',
-  permissions: 'Phase 03 — compounding layer',
-  ctaStaircase: 'Start here — first climb (neutral: texture, not spotlight)',
-  aboutConnection: 'Audit intro — partnership thread (neutral: welcoming, still forensic)',
-  chetnaPortrait: 'Who does this — portrait slot (add public/images/chetna.jpg)',
-  faqDataGraph: 'Questions — customer graph (bright: lines must read)',
-  realTimeGraph: 'Audit final — live signal on the file (bright: waveform)',
-  wildflowerHill: 'About — compound warmth (bright: color payoff)',
-} as const;
-
 export const IMAGE_FRAMES = {
   heroVideo: {
     objectFit: 'cover' as const,
@@ -158,16 +141,6 @@ export const IMAGE_FRAMES = {
     baseScale: 1.01,
   },
   faqDataGraph: {
-    objectFit: 'cover' as const,
-    objectPosition: '74% 48%',
-    filter: 'brightness(0.74) contrast(1.12) saturate(1.02)',
-    mediaOpacity: 0.64,
-    overscanScale: 1.1,
-    parallaxScaleMax: 1.03,
-    parallaxTranslateMax: 10,
-    baseScale: 1.02,
-  },
-  faqDataGraphAudit: {
     objectFit: 'cover' as const,
     objectPosition: '74% 48%',
     filter: 'brightness(0.74) contrast(1.12) saturate(1.02)',
