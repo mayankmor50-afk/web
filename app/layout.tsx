@@ -9,7 +9,19 @@ import { ForensicAtmosphere } from '@/components/effects/forensic-atmosphere'
 import { AmbientSoundProvider } from '@/components/effects/ambient-sound'
 import { ScrollProgress } from '@/components/effects/scroll-progress'
 import { TouchDeviceMark } from '@/components/touch-device-mark'
+import { SkipLink } from '@/components/skip-link'
+import { warnIfLaunchConfigMissing } from '@/lib/env'
+import { absoluteUrl } from '@/lib/site-url'
 import './globals.css'
+
+warnIfLaunchConfigMissing()
+
+const OG_IMAGE = {
+  url: '/images/cherry-tree.png',
+  width: 1200,
+  height: 630,
+  alt: 'Chetna Bhadkare — Retention & Profitability Strategist',
+} as const;
 
 const geistSans = Geist({ 
   subsets: ["latin"],
@@ -36,17 +48,35 @@ const dmSans = DM_Sans({
 import { METADATA, SITE_IDENTITY } from '@/lib/site-copy'
 
 export const metadata: Metadata = {
-  title: METADATA.home.title,
+  metadataBase: new URL(absoluteUrl('/')),
+  title: {
+    default: METADATA.home.title,
+    template: `%s | ${SITE_IDENTITY.name}`,
+  },
   description: METADATA.home.description,
+  alternates: {
+    canonical: '/',
+  },
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon-dark-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/apple-icon.png',
+  },
   openGraph: {
     title: METADATA.home.title,
     description: METADATA.home.ogDescription,
     type: 'website',
+    url: '/',
+    siteName: SITE_IDENTITY.name,
+    images: [OG_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
     title: `${SITE_IDENTITY.name} | Retention Strategist`,
     description: METADATA.home.twitterDescription,
+    images: [OG_IMAGE.url],
   },
 }
 
@@ -70,6 +100,7 @@ export default function RootLayout({
         )}
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${dmSans.variable} font-body antialiased bg-[#0C0B09]`}>
+        <SkipLink />
         <TouchDeviceMark />
         <AmbientSoundProvider>
           <SakuraThread />

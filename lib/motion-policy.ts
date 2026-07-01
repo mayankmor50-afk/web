@@ -32,3 +32,8 @@ export function isFigmaCaptureMode() {
 export function shouldInstantReveal() {
   return isFigmaCaptureMode() || isMobileViewport() || isTouchPrimaryDevice();
 }
+
+export function prefersReducedMotion() {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}

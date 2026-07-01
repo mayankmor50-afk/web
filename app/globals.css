@@ -3714,3 +3714,100 @@
     opacity: 0 !important;
   }
 }
+
+/* ── Skip link + system pages ── */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  padding: 12px 20px;
+  background: var(--brand-amber);
+  color: var(--brand-bg);
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-120%);
+  transition: transform 0.2s var(--ease-forensic);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--brand-cream);
+  outline-offset: 2px;
+}
+
+.not-found-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px var(--section-x);
+  text-align: center;
+  background: var(--brand-bg);
+}
+
+.not-found-page__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brand-amber);
+  margin: 0 0 16px;
+}
+
+.not-found-page__title {
+  font-size: clamp(32px, 5vw, 48px);
+  color: var(--brand-cream);
+  margin: 0 0 16px;
+  line-height: 1.15;
+  max-width: 16ch;
+}
+
+.not-found-page__lead {
+  font-size: 16px;
+  color: var(--brand-muted);
+  line-height: 1.65;
+  margin: 0 0 32px;
+  max-width: 42ch;
+}
+
+.not-found-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.not-found-page__cta {
+  display: inline-block;
+  padding: 12px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--brand-cream);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.not-found-page__cta--primary {
+  background: var(--brand-amber);
+  border-color: var(--brand-amber);
+  color: var(--brand-bg);
+}
+
+.not-found-page__cta:hover {
+  border-color: var(--brand-amber);
+}
+
+.not-found-page__cta--primary:hover {
+  background: var(--brand-amber-hover);
+  border-color: var(--brand-amber-hover);
+}
+
+button.not-found-page__cta {
+  cursor: pointer;
+  font-family: inherit;
+}

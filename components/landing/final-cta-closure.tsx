@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { shouldInstantReveal } from '@/lib/motion-policy';
 import { isEmailLive, isLinkedInLive, mailtoHref, LINKEDIN_URL } from '@/lib/contact';
+import { SITE_IDENTITY } from '@/lib/site-copy';
 
 const navLinks = [
   { href: '/#results', label: 'Results' },
@@ -140,14 +141,14 @@ export function FinalCtaClosure() {
         </nav>
       )}
 
-      <p className="final-cta-closure__name font-display">Chetna Bhadkare</p>
-      <p className="final-cta-closure__role font-body">Retention & Profitability Strategist</p>
+      <p className="final-cta-closure__name font-display">{SITE_IDENTITY.name}</p>
+      <p className="final-cta-closure__role font-body">{SITE_IDENTITY.title}</p>
 
       <div className="final-cta-closure__legal font-body">
         <ClosureLink href="/privacy">Privacy</ClosureLink>
         <Sep />
         <ClosureLink href="/terms">Terms</ClosureLink>
-        <span className="final-cta-closure__copy">© {year} Chetna Bhadkare</span>
+        <span className="final-cta-closure__copy">© {year} {SITE_IDENTITY.name}</span>
       </div>
     </div>
   );

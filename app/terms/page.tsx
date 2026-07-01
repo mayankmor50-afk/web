@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/landing/legal-page';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | Chetna Bhadkare',
+  title: 'Terms of Service',
   description: 'Terms governing use of this website and retention consulting services.',
+  alternates: { canonical: '/terms' },
 };
 
 export default function TermsPage() {

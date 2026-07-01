@@ -11,8 +11,8 @@ export function SmoothScroll() {
     let gsapTicker: ((time: number) => void) | null = null;
 
     const initLenis = async () => {
-      const { isTouchPrimaryDevice, isFigmaCaptureMode } = await import('@/lib/motion-policy');
-      if (isTouchPrimaryDevice() || isFigmaCaptureMode()) return;
+      const { isTouchPrimaryDevice, isFigmaCaptureMode, prefersReducedMotion } = await import('@/lib/motion-policy');
+      if (isTouchPrimaryDevice() || isFigmaCaptureMode() || prefersReducedMotion()) return;
 
       const Lenis = (await import('lenis')).default;
       const gsap = (await import('gsap')).default;

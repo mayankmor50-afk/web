@@ -2,16 +2,17 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/landing/legal-page';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Chetna Bhadkare',
+  title: 'Privacy Policy',
   description: 'How Chetna Bhadkare collects and uses information on this website.',
+  alternates: { canonical: '/privacy' },
 };
 
 export default function PrivacyPage() {
   return (
     <LegalPage title="Privacy Policy" eyebrow="Legal">
       <p>
-        This policy describes how information is handled when you visit chetnabhadkare.com
-        (or this site) and when you book a consultation or audit.
+        This policy describes how information is handled when you visit this website
+        and when you book a consultation or audit.
       </p>
 
       <h2>What we collect</h2>

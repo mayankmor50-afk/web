@@ -12,7 +12,7 @@ interface MobileNavProps {
 const links = [
   { href: '#results', label: 'Results' },
   { href: '#process', label: 'Process' },
-  { href: '/audit', label: 'Audit' },
+  { href: '/audit', label: 'The offer' },
 ];
 
 export function MobileNav({ open, onClose }: MobileNavProps) {
