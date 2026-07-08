@@ -13,3 +13,10 @@ node_modules/
 
 # Deploy
 .vercel/
+
+# design-sync (see .design-sync/config.json)
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules

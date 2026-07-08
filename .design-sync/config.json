@@ -1,0 +1,32 @@
+{
+  "projectId": "c49e4641-5e94-457e-a30a-daa3f8a0a9e0",
+  "pkg": "chetna-bhadkare-site",
+  "globalName": "ChetnaUI",
+  "shape": "package",
+  "entry": ".design-sync/entry.mjs",
+  "srcDir": "components",
+  "tsconfig": "tsconfig.json",
+  "cssEntry": ".design-sync/.cache/next-css/chunks/compiled.css",
+  "componentSrcMap": {
+    "SkipLink": "components/skip-link.tsx",
+    "MagneticNavLink": "components/landing/magnetic-nav-link.tsx",
+    "PhaseSlider": "components/landing/phase-slider.tsx",
+    "BookingLink": "components/landing/booking-link.tsx",
+    "MobileNav": "components/landing/mobile-nav.tsx"
+  },
+  "dtsPropsFor": {
+    "MagneticNavLink": "href: string; children: string; style?: React.CSSProperties;",
+    "PhaseSlider": "onActiveChange?: (index: number) => void;",
+    "BookingLink": "children?: React.ReactNode; label?: string; showPlus?: boolean; className?: string; style?: React.CSSProperties; /** link = underlined headline; primary/outline = button CTAs; ghost = minimal */ variant?: 'link' | 'primary' | 'outline' | 'ghost'; placement?: 'bottom-start' | 'bottom-end' | 'top-end'; onNavigate?: () => void; onMouseEnter?: React.MouseEventHandler<HTMLButtonElement>; onMouseLeave?: React.MouseEventHandler<HTMLButtonElement>;",
+    "MobileNav": "open: boolean; onClose: () => void;"
+  },
+  "overrides": {
+    "PhaseSlider": { "cardMode": "column" },
+    "MobileNav": { "cardMode": "single", "viewport": "480x640" }
+  },
+  "libOverrides": {
+    "bundle.mjs": "stub next/link, next/navigation (usePathname/useRouter/useSearchParams), and next/image with plain DOM equivalents — the preview bundle has no mounted Next.js app router, so the real modules throw; also define process.env.NEXT_PUBLIC_CONTACT_EMAIL/LINKEDIN_URL/BOOKING_URL (referenced at module scope in lib/contact.ts and lib/booking.ts) since `process` isn't a browser global"
+  },
+  "readmeHeader": ".design-sync/conventions.md",
+  "buildCmd": "pnpm run build && mkdir -p .design-sync/.cache/next-css/chunks .design-sync/.cache/next-css/media && cp \"$(ls -t .next/static/chunks/*.css | head -1)\" .design-sync/.cache/next-css/chunks/compiled.css && cp .next/static/media/*.woff2 .design-sync/.cache/next-css/media/"
+}
