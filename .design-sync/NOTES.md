@@ -59,10 +59,13 @@ file — verify with `grep phase-slider__picker` on the copied file after re-run
   components use, which resolve to `--font-playfair`/`--font-dm-sans` and ARE shipped).
   Verified: no selector reachable from the 5 scoped components references the unused
   tokens. User accepted as a non-issue, 2026-07-08.
-- `[RENDER_SKIPPED]`: user opted to skip Playwright/Chromium install and the automated
-  screenshot render check for this sync (2026-07-08) — reviewed `ds-bundle/.review.html`
-  in a browser manually instead. A future re-sync can still install Playwright and get
-  full automated verification; nothing about this choice is permanent.
+- `[RENDER_SKIPPED]` (resolved 2026-07-09): the 2026-07-08 sync skipped Playwright and
+  reviewed `.review.html` manually instead. This re-sync installed playwright + chromium
+  into `.ds-sync/node_modules` (gitignored — reinstall on a fresh clone: `pnpm add
+  playwright` inside `.ds-sync/`, then `node node_modules/playwright/cli.js install
+  chromium`) and ran the full automated render check for the first time: 5/5 previews
+  render cleanly, contact sheet confirms all 5 look correct. Treat this as the verified
+  baseline going forward, not a one-off.
 
 ## Previews (authored 2026-07-08, all 5 components)
 
@@ -94,11 +97,10 @@ Playwright will grade these for the first time then, not carry forward a prior g
   changes its CSS chunking (currently one chunk under `.next/static/chunks/*.css`), the
   `ls -t ... | head -1` in `buildCmd` may grab the wrong file — verify by grepping the
   copied file for `phase-slider__picker` after rebuilding.
-- **No automated render/grade verification ever ran** (Playwright was never installed
-  this sync) — the upload is backed only by build/validate (syntax, CSS resolution,
-  font/token checks) and one manual human review of `.review.html`. A future sync
-  installing Playwright will do real screenshot verification for the first time, not
-  re-verify — treat its first `[RENDER]`/grade output as new information, not a regression.
+- **Playwright/chromium live only in `.ds-sync/node_modules`**, which is gitignored —
+  every fresh clone needs `pnpm add playwright` (inside `.ds-sync/`) + `node
+  node_modules/playwright/cli.js install chromium` before the render check can run for
+  real again, otherwise it silently falls back to `[RENDER_SKIPPED]`.
 - **`PhaseSlider` is content-coupled**: `PARTNERSHIP_PHASES` (headlines/copy/images) is
   hardcoded in `lib/audit-content.ts`, not passed as a prop. Every design built with this
   component will show the same fixed Chetna-specific phase content — it's not a generic
