@@ -546,7 +546,7 @@ function ProofSection() {
       <div ref={wrapperRef} className="whale-scene">
         <Bioluminescence />
         <ForensicGrid opacity={0.06} />
-        <div className="whale-parallax" style={{ willChange: 'transform', filter: IMAGE_FRAMES.whale.filter }}>
+        <div className="whale-parallax" style={{ willChange: 'transform', filter: IMAGE_FRAMES.whale.filter, opacity: IMAGE_FRAMES.whale.mediaOpacity }}>
           <SceneImage
             src={BRAND_IMAGES.whale}
             sizes="100vw"
@@ -571,6 +571,7 @@ function ProofSection() {
       {/* Content — sits above whale */}
       <div ref={textRef} className="site-container section-pad proof-content" style={{ position: 'relative', zIndex: 2, paddingBottom: 'clamp(64px, 10vw, 96px)' }}>
 
+        <div className="proof-panel">
         <div className="proof-row">
 
           {/* Left: headline */}
@@ -621,6 +622,7 @@ function ProofSection() {
               {PROOF.footnote}
             </p>
           </div>
+        </div>
         </div>
 
       </div>

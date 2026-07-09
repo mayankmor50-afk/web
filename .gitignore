@@ -20,3 +20,9 @@ ds-bundle/
 .design-sync/.cache/
 .design-sync/learnings/
 .design-sync/node_modules
+
+# screenshot capture tool (temp)
+.shot-tool/
+
+# design-reference screenshots (regenerable via capture script; large binaries)
+web-designs/

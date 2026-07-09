@@ -29,8 +29,8 @@ export const IMAGE_LUMINANCE: Record<
   cherryTree: 'neutral',
   /** The gap — darkness between shores IS the story */
   bridge: 'dark',
-  /** Proof — underwater lift / spotlight; hidden value surfacing */
-  whale: 'bright',
+  /** Proof — demoted to quiet right-edge atmosphere; legibility of the numbers wins */
+  whale: 'dark',
   /** Offer — heavy protection; recedes behind cards */
   shield: 'dark',
   /** Audit intro — partnership thread; neutral-dark, slightly open (orientation beat) */
@@ -88,12 +88,13 @@ export const IMAGE_FRAMES = {
   },
   whale: {
     objectFit: 'cover' as const,
-    objectPosition: '50% 46%',
-    filter: 'brightness(0.94) contrast(1.06) saturate(1.02)',
+    objectPosition: '82% 46%',
+    filter: 'brightness(0.5) contrast(1.08) saturate(0.9)',
+    mediaOpacity: 0.5,
     parallaxScale: 0.94,
     parallaxTranslateMax: 16,
-    preRevealOverlay: 'rgba(6,6,5,0.62)',
-    spotlight: 'ellipse 108% 88% at 50% 44%',
+    preRevealOverlay: 'rgba(6,6,5,0.72)',
+    spotlight: 'ellipse 96% 80% at 82% 44%',
   },
   shield: {
     objectFit: 'cover' as const,
