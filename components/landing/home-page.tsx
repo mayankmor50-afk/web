@@ -24,7 +24,6 @@ import { StickyAuditCta } from '@/components/landing/sticky-audit-cta';
 import { MobileNav } from '@/components/landing/mobile-nav';
 import { ForensicGrid } from '@/components/atmosphere/forensic-grid';
 import { Bioluminescence } from '@/components/atmosphere/bioluminescence';
-import { DataStreamCurtain } from '@/components/landing/data-stream-curtain';
 import { useHeroScroll } from '@/components/effects/use-hero-scroll';
 import { SITE } from '@/lib/site-tokens';
 import { SceneImage } from '@/components/landing/scene-image';
@@ -295,7 +294,6 @@ function ProblemSection() {
 
   return (
     <section ref={ref} className="gap-section" style={{ position: 'relative', overflow: 'hidden', background: SITE.bg2 }}>
-      <DataStreamCurtain />
       <div className="gap-layout" style={{ position: 'relative', zIndex: 1 }}>
 
         <div className="gap-copy">
@@ -752,6 +750,7 @@ function AboutSection() {
   return (
     <section className="about-section" style={{ position: 'relative', background: SITE.bg, overflow: 'hidden' }}>
       <HorizonScene variant="wildflowerHill" className="about-horizon" />
+      <FaqGraphAtmosphere className="about-node-graph" />
 
       <div ref={ref} className="about-layout">
 
@@ -842,7 +841,6 @@ function FaqSection() {
             objectPosition={IMAGE_FRAMES.faqDataGraph.objectPosition}
           />
         </div>
-        <FaqGraphAtmosphere />
         <div className="faq-graph-edge faq-graph-edge--integrated" />
         <div className="faq-graph-scrim faq-graph-scrim--integrated" />
         <div className="faq-graph-nodes" aria-hidden="true">
@@ -1040,17 +1038,18 @@ export default function Page() {
       <Navigation />
       <StickyAuditCta />
       <HeroSection />
-      <SectionWipe fromColor="#0C0B09" toColor="#080807" />
+      <SectionWipe fromColor="#0C0B09" toColor="#080807" intensity="thread" />
       <ProblemSection />
-      <SectionWipe fromColor="#080807" toColor="#0C0B09" />
+      <SectionWipe fromColor="#080807" toColor="#0C0B09" intensity="thread" />
       <MethodSection />
-      <SectionWipe fromColor="#0C0B09" toColor="#060605" />
+      {/* Into Proof: "loading the customer file" right before the evidence */}
+      <SectionWipe fromColor="#0C0B09" toColor="#060605" intensity="full" />
       <ProofSection />
-      <SectionWipe fromColor="#060605" toColor="#0C0B09" height={80} />
+      <SectionWipe fromColor="#060605" toColor="#0C0B09" height={80} intensity="thread" />
       <OfferSection />
-      <SectionWipe fromColor="#0C0B09" toColor="#080807" height={72} />
+      <SectionWipe fromColor="#0C0B09" toColor="#080807" height={72} intensity="thread" />
       <AboutSection />
-      <SectionWipe fromColor="#080807" toColor="#0C0B09" height={64} />
+      <SectionWipe fromColor="#080807" toColor="#0C0B09" height={64} intensity="thread" />
       <FaqSection />
       <FinalCTASection />
       <SiteClosureSection />

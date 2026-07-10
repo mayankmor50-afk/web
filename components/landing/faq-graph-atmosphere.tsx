@@ -2,8 +2,13 @@
 
 import { useEffect, useRef } from 'react';
 
-/** Animated node mesh — customer-graph atmosphere for the FAQ panel */
-export function FaqGraphAtmosphere() {
+interface FaqGraphAtmosphereProps {
+  /** Positioning class for the canvas. Defaults to the FAQ/audit graph placement. */
+  className?: string;
+}
+
+/** Animated node mesh — "living customer base" atmosphere (FAQ + About) */
+export function FaqGraphAtmosphere({ className = 'faq-graph-atmosphere' }: FaqGraphAtmosphereProps = {}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -91,7 +96,7 @@ export function FaqGraphAtmosphere() {
   return (
     <canvas
       ref={canvasRef}
-      className="faq-graph-atmosphere"
+      className={className}
       aria-hidden="true"
     />
   );

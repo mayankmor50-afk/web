@@ -12,7 +12,14 @@ interface Stream {
   col: number;
 }
 
-export function DataStreamCurtain() {
+interface DataStreamCurtainProps {
+  /** Peak alpha of the amber digits (the opacity ceiling). Default matches the calm ambient value. */
+  maxOpacity?: number;
+  /** Stacking context for the canvas relative to its container. */
+  zIndex?: number;
+}
+
+export function DataStreamCurtain({ maxOpacity = 0.04, zIndex = 2 }: DataStreamCurtainProps = {}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -57,7 +64,7 @@ export function DataStreamCurtain() {
           const py = s.y + j * 16;
           if (py < -20 || py > canvas.height + 20) return;
           const fade = 1 - j / s.chars.length;
-          ctx.fillStyle = `rgba(184, 135, 58, ${0.04 * fade})`;
+          ctx.fillStyle = `rgba(184, 135, 58, ${maxOpacity * fade})`;
           ctx.fillText(ch, s.x + colWidth / 2, py);
         });
       });
@@ -73,14 +80,14 @@ export function DataStreamCurtain() {
       cancelAnimationFrame(raf);
       ro.disconnect();
     };
-  }, []);
+  }, [maxOpacity]);
 
   return (
     <canvas
       ref={canvasRef}
       aria-hidden="true"
       className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ zIndex: 2 }}
+      style={{ zIndex }}
     />
   );
 }

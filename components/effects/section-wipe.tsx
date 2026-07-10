@@ -1,14 +1,27 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { DataStreamCurtain } from '@/components/landing/data-stream-curtain';
 
 interface SectionWipeProps {
   fromColor: string;
   toColor: string;
   height?: number;
+  /**
+   * How much of the relocated data-rain rides inside the wipe.
+   * - 'full'   → ~20% peak opacity (the ceiling) — "loading the customer file"
+   * - 'thread' → faint recurring thread (~7%)
+   * - 'none'   → no rain
+   */
+  intensity?: 'full' | 'thread' | 'none';
 }
 
-export function SectionWipe({ fromColor, toColor, height = 100 }: SectionWipeProps) {
+const RAIN_MAX_OPACITY: Record<'full' | 'thread', number> = {
+  full: 0.2,
+  thread: 0.07,
+};
+
+export function SectionWipe({ fromColor, toColor, height = 100, intensity = 'thread' }: SectionWipeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
@@ -89,6 +102,11 @@ export function SectionWipe({ fromColor, toColor, height = 100 }: SectionWipePro
         zIndex: 5,
       }}
     >
+      {/* Data-rain rides UNDER the fill so it's glimpsed during the wipe then
+          cleanly covered at rest — keeps the transition a cut, not a screensaver. */}
+      {intensity !== 'none' && (
+        <DataStreamCurtain maxOpacity={RAIN_MAX_OPACITY[intensity]} zIndex={0} />
+      )}
       <div
         ref={fillRef}
         style={{
@@ -97,6 +115,7 @@ export function SectionWipe({ fromColor, toColor, height = 100 }: SectionWipePro
           background: toColor,
           transformOrigin: 'bottom center',
           transform: 'scaleY(0)',
+          zIndex: 1,
         }}
       />
       <div
@@ -111,6 +130,7 @@ export function SectionWipe({ fromColor, toColor, height = 100 }: SectionWipePro
           transformOrigin: 'center',
           transform: 'scaleX(0)',
           opacity: 0,
+          zIndex: 2,
         }}
       />
     </div>

@@ -477,6 +477,20 @@
     right: -6%;
   }
 
+  /* "Living customer base" node mesh — quiet atmosphere behind the About content.
+     Held to the left/center so it never crosses the copy column on the right. */
+  .about-node-graph {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 62%;
+    z-index: 1;
+    opacity: 0.16;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
   .about-layout {
     position: relative;
     z-index: 2;
@@ -941,6 +955,8 @@
   .about-portrait__photo {
     object-fit: cover;
     object-position: center 22%;
+    /* Amber/cream grade to sit the portrait inside the forensic-noir palette */
+    filter: brightness(0.92) contrast(1.06) saturate(1.02) sepia(0.08);
   }
 
   .about-portrait__placeholder {
