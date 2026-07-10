@@ -192,7 +192,7 @@ export function PhaseSlider({ onActiveChange }: PhaseSliderProps) {
                   )}
 
                   {p.id === 'audit' ? (
-                    <ScheduleLink variant="link" label="Book a call" showPlus className="phase-slider__cta">
+                    <ScheduleLink variant="link" label="Book a call" showPlus className="phase-slider__cta" analyticsSource="phase-slider">
                       Book a call +
                     </ScheduleLink>
                   ) : (

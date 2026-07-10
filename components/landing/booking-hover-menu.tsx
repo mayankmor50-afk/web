@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AUDIT_PAGE_PATH, BOOKING_URL, isBookingLive } from '@/lib/booking';
 import { CONTACT_EMAIL, isEmailLive, isLinkedInLive, LINKEDIN_URL, mailtoHref } from '@/lib/contact';
+import { trackBooking, type BookingAnalyticsSource } from '@/lib/analytics';
 
 type BookingHoverMenuProps = {
   children?: ReactNode;
@@ -25,6 +26,8 @@ type BookingHoverMenuProps = {
   /** link = Drift-style underlined headline; primary/outline = button CTAs */
   variant?: 'link' | 'primary' | 'outline' | 'ghost';
   placement?: 'bottom-start' | 'bottom-end' | 'top-end';
+  /** Vercel Analytics — where this CTA lives on the page */
+  analyticsSource?: BookingAnalyticsSource;
   onNavigate?: () => void;
   onMouseEnter?: MouseEventHandler<HTMLButtonElement>;
   onMouseLeave?: MouseEventHandler<HTMLButtonElement>;
@@ -76,6 +79,7 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
       style,
       variant = 'link',
       placement = 'bottom-start',
+      analyticsSource = 'unknown',
       onNavigate,
       onMouseEnter,
       onMouseLeave,
@@ -112,6 +116,7 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
 
     const copyEmail = useCallback(async () => {
       if (!isEmailLive()) return;
+      trackBooking('email_copy', analyticsSource);
       try {
         await navigator.clipboard.writeText(CONTACT_EMAIL);
         setCopied(true);
@@ -119,7 +124,7 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
       } catch {
         window.prompt('Copy email:', CONTACT_EMAIL);
       }
-    }, []);
+    }, [analyticsSource]);
 
     const bookCallHref = isBookingLive() ? BOOKING_URL : AUDIT_PAGE_PATH;
     const bookCallExternal = isBookingLive();
@@ -187,6 +192,7 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
                 className="booking-hover-menu__item font-body"
                 href={`${mailtoHref()}?subject=${encodeURIComponent('Retention audit inquiry')}`}
                 onClick={() => {
+                  trackBooking('email_mailto', analyticsSource);
                   setOpen(false);
                   onNavigate?.();
                 }}
@@ -205,6 +211,7 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
+                trackBooking(bookCallExternal ? 'cal_click' : 'audit_click', analyticsSource);
                 setOpen(false);
                 onNavigate?.();
               }}
@@ -218,6 +225,7 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
               className="booking-hover-menu__item font-body booking-hover-menu__item--primary"
               href={bookCallHref}
               onClick={() => {
+                trackBooking('audit_click', analyticsSource);
                 setOpen(false);
                 onNavigate?.();
               }}
@@ -233,6 +241,7 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
               className="booking-hover-menu__item booking-hover-menu__item--muted font-body"
               href={AUDIT_PAGE_PATH}
               onClick={() => {
+                trackBooking('audit_click', analyticsSource);
                 setOpen(false);
                 onNavigate?.();
               }}

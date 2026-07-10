@@ -72,6 +72,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
       <BookingLink
         variant="primary"
         placement="top-end"
+        analyticsSource="mobile-nav"
         onNavigate={onClose}
         className="font-body"
         style={{

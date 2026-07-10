@@ -33,6 +33,7 @@ export function AuditStickyCta() {
       label="Book a call"
       showPlus={false}
       placement="top-end"
+      analyticsSource="sticky-cta"
       className="audit-sticky-cta btn-primary font-body"
     >
       Book a call →

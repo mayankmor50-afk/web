@@ -35,7 +35,7 @@ export function AuditPageContent() {
         <Link href="/" className="font-body audit-page__back">
           ← Back to home
         </Link>
-        <ScheduleLink variant="outline" label="Book a call" showPlus={false} placement="bottom-end">
+        <ScheduleLink variant="outline" label="Book a call" showPlus={false} placement="bottom-end" analyticsSource="audit-nav">
           Book call
         </ScheduleLink>
       </header>
@@ -52,7 +52,7 @@ export function AuditPageContent() {
           </p>
 
           <div className={`audit-page__hero-actions ${revealClass(introInView, 'fade-only')}`}>
-            <ScheduleLink variant="link" label="Book a call" showPlus className="audit-page-book-call">
+            <ScheduleLink variant="link" label="Book a call" showPlus className="audit-page-book-call" analyticsSource="audit-hero">
               Book a call +
             </ScheduleLink>
             <p className="font-body audit-page__fine-print">{AUDIT_PAGE.notProposalNote}</p>
@@ -146,7 +146,7 @@ export function AuditPageContent() {
           <p className={`font-body audit-page__final-copy ${revealClass(finalInView, 'fade-only')}`}>
             {AUDIT_FINAL.body}
           </p>
-          <ScheduleLink variant="link" label="Book a call" showPlus className="audit-page-book-call">
+          <ScheduleLink variant="link" label="Book a call" showPlus className="audit-page-book-call" analyticsSource="audit-offer">
             Book a call +
           </ScheduleLink>
           <p className="font-body audit-page__final-fine">{AUDIT_FINAL.finePrint}</p>

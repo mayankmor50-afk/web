@@ -19,6 +19,7 @@ import { useMagnetic } from '@/lib/use-magnetic';
 import { BookingLink } from '@/components/landing/booking-link';
 import { FinalCtaClosure } from '@/components/landing/final-cta-closure';
 import { useInView } from '@/lib/use-in-view';
+import { useTrackSectionView } from '@/lib/use-track-section-view';
 import { shouldInstantReveal } from '@/lib/motion-policy';
 import { StickyAuditCta } from '@/components/landing/sticky-audit-cta';
 import { MobileNav } from '@/components/landing/mobile-nav';
@@ -106,6 +107,7 @@ function Navigation() {
           label="Book a call"
           showPlus={false}
           placement="bottom-end"
+          analyticsSource="nav"
           className="font-body"
           style={{
             fontSize: 13, fontWeight: 600,
@@ -489,6 +491,7 @@ function ProofSection() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState(false);
   const { ref: textRef, inView: textInView } = useInView(0.2);
+  useTrackSectionView('proof', textInView);
 
   useLayoutEffect(() => {
     if (shouldInstantReveal()) setRevealed(true);
@@ -634,6 +637,7 @@ function ProofSection() {
 
 function OfferSection() {
   const { ref, inView } = useInView(0.1);
+  useTrackSectionView('offer', inView);
   const shieldWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -940,6 +944,7 @@ function FaqSection() {
 
 function FinalCTASection() {
   const { ref, inView } = useInView(0.2);
+  useTrackSectionView('final-cta', inView);
   const ctaWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -995,7 +1000,7 @@ function FinalCTASection() {
           </h2>
 
           <div className={`final-cta-action ${revealClass(inView, 'fade-only')}`} style={{ transitionDelay: '0.15s' }}>
-            <BookingLink variant="link" label="Book a call" showPlus className="final-cta-book-call" />
+            <BookingLink variant="link" label="Book a call" showPlus className="final-cta-book-call" analyticsSource="final-cta" />
           </div>
 
           <SceneNote

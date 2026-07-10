@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { shouldDisableHeavyWebGL } from '@/lib/motion-policy';
 import { SAKURA } from '@/lib/sakura-palette';
 
 interface DriftItem {
@@ -95,18 +96,15 @@ function makeClusterTexture(): THREE.CanvasTexture {
  */
 export function SakuraDepthField() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [webglEnabled, setWebglEnabled] = useState(false);
 
   useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    setWebglEnabled(!shouldDisableHeavyWebGL());
   }, []);
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
+    if (!container || !webglEnabled) return;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -256,7 +254,7 @@ export function SakuraDepthField() {
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };
-  }, []);
+  }, [webglEnabled]);
 
   return (
     <>
@@ -272,7 +270,7 @@ export function SakuraDepthField() {
           `,
         }}
       />
-      {!reducedMotion && (
+      {webglEnabled && (
         <div
           ref={containerRef}
           aria-hidden="true"

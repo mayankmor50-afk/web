@@ -30,6 +30,17 @@ pnpm dev
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Recommended | Footer + mailto fallback |
 | `NEXT_PUBLIC_LINKEDIN_URL` | Recommended | Footer LinkedIn |
 
+## Booking flow
+
+There is **no iframe embed**. Booking is plain links, configured via env vars:
+
+1. **Homepage CTAs** (`BookingLink` / `BookingHoverMenu`) open a hover menu with copy-email, mailto, and optional Cal.com.
+2. **Primary path:** CTAs link to **`/audit`** — the canonical offer + booking page.
+3. **Cal.com is opt-in:** set `NEXT_PUBLIC_BOOKING_URL` to your Cal.com event URL. When set, "Book call" opens Cal.com in a **new tab** (`target="_blank"`). When unset, CTAs fall back to `/audit` or `mailto:` via `NEXT_PUBLIC_CONTACT_EMAIL`.
+4. **`/audit` schedule buttons** use the same hover menu; the sticky CTA on that page also routes through `ScheduleLink`.
+
+Logic lives in `lib/booking.ts`. Vercel Analytics custom events (`booking`, `section_view`) fire from `lib/analytics.ts` when live.
+
 ## Deploy (Vercel)
 
 1. Import repo → add all `NEXT_PUBLIC_*` from `.env.local`

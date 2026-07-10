@@ -37,3 +37,16 @@ export function prefersReducedMotion() {
   if (typeof window === 'undefined') return false;
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
+
+/** Skip WebGL / heavy canvas loops on constrained devices (sakura, hero mesh). */
+export function shouldDisableHeavyWebGL() {
+  if (typeof window === 'undefined') return false;
+  if (prefersReducedMotion()) return true;
+  if (isMobileViewport()) return true;
+  if (window.location.search.includes('lowPower=1')) return true;
+
+  const nav = navigator as Navigator & { deviceMemory?: number };
+  if (nav.deviceMemory !== undefined && nav.deviceMemory < 4) return true;
+
+  return false;
+}
