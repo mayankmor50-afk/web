@@ -12,12 +12,7 @@ export function middleware(request: NextRequest) {
 
   // Never gate Next internals / static build assets
   const { pathname } = request.nextUrl;
-  if (
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/favicon') ||
-    pathname === '/robots.txt' ||
-    pathname === '/sitemap.xml'
-  ) {
+  if (pathname.startsWith('/_next') || pathname.startsWith('/favicon')) {
     return NextResponse.next();
   }
 
