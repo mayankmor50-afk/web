@@ -27,8 +27,9 @@ pnpm dev
 |----------|----------|---------|
 | `NEXT_PUBLIC_SITE_URL` | Prod | Canonical URL, sitemap, OG |
 | `NEXT_PUBLIC_BOOKING_URL` | Yes | Cal.com on `/audit` |
-| `NEXT_PUBLIC_CONTACT_EMAIL` | Recommended | Footer + mailto fallback |
-| `NEXT_PUBLIC_LINKEDIN_URL` | Recommended | Footer LinkedIn |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | Optional | Footer + mailto fallback |
+| `NEXT_PUBLIC_LINKEDIN_URL` | Optional | Footer LinkedIn |
+| `SITE_ACCESS_PASSWORD` | Review | HTTP Basic Auth gate (server-only). Unset = public |
 
 ## Booking flow
 
@@ -43,8 +44,10 @@ Logic lives in `lib/booking.ts`. Vercel Analytics custom events (`booking`, `sec
 
 ## Deploy (Vercel)
 
-1. Import repo → add all `NEXT_PUBLIC_*` from `.env.local`
-2. Framework: **Next.js** → Deploy
+1. Import repo → add env vars from `.env.example` (skip email/LinkedIn if not ready)
+2. For private review: set `SITE_ACCESS_PASSWORD` (Production) — share that password with reviewers only
+3. Framework: **Next.js** → Deploy
+4. To go public later: delete `SITE_ACCESS_PASSWORD` on Vercel → Redeploy
 
 ## Project layout
 
