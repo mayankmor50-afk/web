@@ -1310,6 +1310,12 @@
     margin: 0 0 16px;
   }
 
+  .final-cta-action {
+    position: relative;
+    z-index: 2;
+    margin: 8px 0 28px;
+  }
+
   .final-cta-body {
     font-size: 16px;
     color: #6b6560;
@@ -1331,16 +1337,18 @@
     margin-bottom: 0;
   }
 
+  /* Sit below the Book CTA — never pull up into the headline/action (overlap bug) */
   .scene-note.final-cta-scene-note {
     position: relative;
     left: auto;
     right: auto;
     bottom: auto;
-    transform: translateY(clamp(-2.5cm, -1.5vh, -1.75cm));
-    margin: auto auto clamp(12px, 2vw, 20px);
-    max-width: 260px;
+    transform: none;
+    margin: 8px auto 0;
+    max-width: 280px;
     align-items: center;
     text-align: center;
+    z-index: 1;
   }
 
   .site-closure-section {
