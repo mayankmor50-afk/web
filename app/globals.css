@@ -962,6 +962,8 @@
   .about-portrait__placeholder {
     position: absolute;
     inset: 18px;
+    display: grid;
+    place-items: center;
     background: rgba(8, 8, 7, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
@@ -1001,6 +1003,17 @@
     right: 12px;
     border-bottom-width: 1px;
     border-right-width: 1px;
+  }
+
+  .about-portrait__monogram {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(48px, 12vw, 72px);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: rgba(232, 196, 120, 0.55);
+    line-height: 1;
+    user-select: none;
   }
 
   .about-portrait__caption {

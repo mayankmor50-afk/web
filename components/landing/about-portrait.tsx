@@ -44,6 +44,7 @@ export function AboutPortrait() {
             <span className="about-portrait__corner about-portrait__corner--tr" />
             <span className="about-portrait__corner about-portrait__corner--bl" />
             <span className="about-portrait__corner about-portrait__corner--br" />
+            <span className="about-portrait__monogram font-display">CB</span>
           </div>
         )}
       </div>

@@ -92,11 +92,6 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
     const rootRef = useRef<HTMLDivElement>(null);
     const [open, setOpen] = useState(false);
     const [copied, setCopied] = useState(false);
-    const [isTouch, setIsTouch] = useState(false);
-
-    useEffect(() => {
-      setIsTouch(window.matchMedia('(hover: none)').matches);
-    }, []);
 
     useEffect(() => {
       if (!open) return;
@@ -129,6 +124,9 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
     const bookCallHref = isBookingLive() ? BOOKING_URL : AUDIT_PAGE_PATH;
     const bookCallExternal = isBookingLive();
     const bookCallLabel = isBookingLive() ? 'Book call' : 'View audit details';
+    // When Cal.com is the only action (no email/LinkedIn), click should open it —
+    // don't force a hover menu with a single item (felt "broken" on /audit).
+    const calOnly = isBookingLive() && !isEmailLive() && !isLinkedInLive();
 
     const triggerLabel = children ?? (
       <>
@@ -146,6 +144,17 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
       .filter(Boolean)
       .join(' ');
 
+    const handleTriggerClick = () => {
+      if (calOnly) {
+        trackBooking('cal_click', analyticsSource);
+        window.open(BOOKING_URL, '_blank', 'noopener,noreferrer');
+        onNavigate?.();
+        return;
+      }
+      // Desktop used to be hover-only; click did nothing. Toggle for everyone.
+      setOpen((v) => !v);
+    };
+
     return (
       <div
         ref={rootRef}
@@ -156,18 +165,17 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
           ref={ref}
           type="button"
           className={triggerClass}
-          aria-expanded={open}
-          aria-haspopup="menu"
-          aria-controls={menuId}
-          onClick={() => {
-            if (isTouch) setOpen((v) => !v);
-          }}
+          aria-expanded={calOnly ? undefined : open}
+          aria-haspopup={calOnly ? undefined : 'menu'}
+          aria-controls={calOnly ? undefined : menuId}
+          onClick={handleTriggerClick}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
           {triggerLabel}
         </button>
 
+        {!calOnly && (
         <div id={menuId} role="menu" className="booking-hover-menu__panel">
           <div className="booking-hover-menu__header">
             <span className="booking-hover-menu__brand font-display">Chetna Bhadkare</span>
@@ -268,6 +276,7 @@ export const BookingHoverMenu = forwardRef<HTMLButtonElement, BookingHoverMenuPr
             </a>
           )}
         </div>
+        )}
       </div>
     );
   },

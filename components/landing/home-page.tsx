@@ -144,6 +144,7 @@ const HERO_VIDEO_SRC = '/images/hero.mp4';
 function HeroSection() {
   const { translateY } = useHeroScroll();
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [videoOk, setVideoOk] = useState(true);
 
   useEffect(() => {
     setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -169,6 +170,7 @@ function HeroSection() {
           objectPosition={IMAGE_FRAMES.heroVideo.objectPosition}
           style={{ filter: IMAGE_FRAMES.cherryTree.filter }}
         />
+        {!reducedMotion && videoOk && (
         <video
           className="hero-video"
           autoPlay
@@ -177,6 +179,7 @@ function HeroSection() {
           playsInline
           poster={BRAND_IMAGES.cherryTree}
           preload="auto"
+          onError={() => setVideoOk(false)}
           style={{
             position: 'absolute',
             inset: 0,
@@ -190,6 +193,7 @@ function HeroSection() {
         >
           <source src={HERO_VIDEO_SRC} type="video/mp4" />
         </video>
+        )}
       </div>
 
       {/* Layer 2 — amber forensic mesh (courser: screen blend ~22%) */}
