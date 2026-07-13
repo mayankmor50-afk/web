@@ -4,8 +4,8 @@ import type { NextRequest } from 'next/server';
 const COOKIE = 'site_review_ok';
 
 /**
- * Optional review gate — set SITE_ACCESS_PASSWORD on Vercel (server-only, NOT NEXT_PUBLIC_).
- * Shows a password form with a smooth fade into the site on success.
+ * Optional review gate — set SITE_ACCESS_PASSWORD on Vercel (server-only).
+ * Plain form POST + redirect (no fade/veil — those caused a stuck black screen).
  * Remove the env var + redeploy for a public launch.
  */
 export async function middleware(request: NextRequest) {
@@ -19,44 +19,31 @@ export async function middleware(request: NextRequest) {
 
   const expected = await gateToken(password);
 
-  // Already unlocked this browser
   if (request.cookies.get(COOKIE)?.value === expected) {
     return NextResponse.next();
   }
 
-  // Still accept Basic Auth (curl / smoke tests / URL credentials)
   if (await basicAuthOk(request, password)) {
     const res = NextResponse.next();
     res.cookies.set(COOKIE, expected, cookieOpts(request));
     return res;
   }
 
-  // Form submit
   if (pathname === '/review-gate' && request.method === 'POST') {
     const form = await request.formData();
     const pass = String(form.get('password') ?? '');
     const next = safeNext(String(form.get('next') ?? '/'));
-    const wantsJson = request.headers.get('accept')?.includes('application/json');
 
     if (pass === password) {
-      if (wantsJson) {
-        const res = NextResponse.json({ ok: true, next });
-        res.cookies.set(COOKIE, expected, cookieOpts(request));
-        return res;
-      }
-      // Non-JS fallback: dark interstitial, then soft redirect
-      const res = htmlUnlock(next);
+      // 303 + Set-Cookie — most reliable across Safari/Chrome/mobile
+      const res = NextResponse.redirect(new URL(next, request.url), 303);
       res.cookies.set(COOKIE, expected, cookieOpts(request));
       return res;
     }
 
-    if (wantsJson) {
-      return NextResponse.json({ ok: false }, { status: 401 });
-    }
     return htmlLogin(next, true);
   }
 
-  // Show login form
   const next = pathname === '/review-gate' ? '/' : `${pathname}${request.nextUrl.search}`;
   return htmlLogin(next, false);
 }
@@ -101,47 +88,6 @@ async function basicAuthOk(request: NextRequest, password: string) {
   }
 }
 
-function htmlUnlock(next: string) {
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="noindex,nofollow" />
-  <title>Opening…</title>
-  <style>
-    html, body { margin: 0; height: 100%; background: #0C0B09; }
-    .veil {
-      position: fixed; inset: 0; background: #0C0B09;
-      opacity: 0; transition: opacity 0.55s ease;
-    }
-    .veil.on { opacity: 1; }
-  </style>
-</head>
-<body>
-  <div class="veil" id="veil"></div>
-  <script>
-    (function () {
-      var next = ${JSON.stringify(next)};
-      var veil = document.getElementById('veil');
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { veil.classList.add('on'); });
-      });
-      setTimeout(function () { location.replace(next); }, 520);
-    })();
-  </script>
-</body>
-</html>`;
-
-  return new NextResponse(html, {
-    status: 200,
-    headers: {
-      'Content-Type': 'text/html; charset=utf-8',
-      'Cache-Control': 'no-store',
-    },
-  });
-}
-
 function htmlLogin(next: string, failed: boolean) {
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -153,31 +99,16 @@ function htmlLogin(next: string, failed: boolean) {
   <style>
     :root { color-scheme: dark; }
     * { box-sizing: border-box; }
-    html, body {
-      margin: 0; min-height: 100vh; background: #0C0B09; color: #E8E2D9;
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      background: #0C0B09; color: #E8E2D9;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
     }
-    body {
-      display: grid; place-items: center;
-      transition: opacity 0.45s ease;
-    }
-    body.is-leaving { opacity: 0; pointer-events: none; }
     .card {
       width: min(92vw, 400px); padding: 32px 28px;
       border: 1px solid rgba(184,135,58,0.35);
       background: rgba(18,16,14,0.92);
-      opacity: 0; transform: translateY(10px);
-      animation: rise 0.5s ease forwards;
     }
-    @keyframes rise {
-      to { opacity: 1; transform: none; }
-    }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      75% { transform: translateX(6px); }
-    }
-    .card.is-shake { animation: shake 0.35s ease; }
     .eyebrow {
       font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
       color: #B8873A; margin: 0 0 12px;
@@ -197,92 +128,23 @@ function htmlLogin(next: string, failed: boolean) {
     button {
       width: 100%; padding: 12px 16px; border: 0; cursor: pointer;
       background: #B8873A; color: #0C0B09; font-weight: 600; font-size: 14px;
-      transition: filter 0.15s ease, opacity 0.15s ease;
     }
-    button:hover { filter: brightness(1.05); }
-    button:disabled { opacity: 0.65; cursor: wait; }
-    .err { color: #E8A0A0; font-size: 13px; margin: -8px 0 16px; min-height: 1.2em; }
-    .err:empty { display: none; }
-    .veil {
-      position: fixed; inset: 0; background: #0C0B09;
-      opacity: 0; pointer-events: none; transition: opacity 0.5s ease; z-index: 20;
-    }
-    .veil.on { opacity: 1; }
+    .err { color: #E8A0A0; font-size: 13px; margin: -8px 0 16px; }
   </style>
 </head>
 <body>
-  <div class="veil" id="veil" aria-hidden="true"></div>
-  <main class="card" id="card">
+  <main class="card">
     <p class="eyebrow">Private preview</p>
     <h1>Chetna Bhadkare</h1>
     <p>This site is review-only. Enter the password you were given.</p>
-    <p class="err" id="err">${failed ? 'Wrong password. Try again.' : ''}</p>
-    <form method="POST" action="/review-gate" id="gate-form">
+    ${failed ? '<p class="err">Wrong password. Try again.</p>' : ''}
+    <form method="POST" action="/review-gate">
       <input type="hidden" name="next" value="${escapeAttr(next)}" />
       <label for="password">Password</label>
       <input id="password" name="password" type="password" autocomplete="current-password" required autofocus />
-      <button type="submit" id="submit">Enter site</button>
+      <button type="submit">Enter site</button>
     </form>
   </main>
-  <script>
-    (function () {
-      var form = document.getElementById('gate-form');
-      var card = document.getElementById('card');
-      var err = document.getElementById('err');
-      var btn = document.getElementById('submit');
-      var veil = document.getElementById('veil');
-      var body = document.body;
-      var busy = false;
-
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (busy) return;
-        busy = true;
-        btn.disabled = true;
-        err.textContent = '';
-        body.classList.add('is-leaving');
-
-        var data = new FormData(form);
-        var next = data.get('next') || '/';
-
-        window.setTimeout(function () {
-          fetch('/review-gate', {
-            method: 'POST',
-            body: data,
-            headers: { 'Accept': 'application/json' },
-            credentials: 'same-origin',
-          }).then(function (res) {
-            return res.json().then(function (json) {
-              return { res: res, json: json };
-            }).catch(function () {
-              return { res: res, json: null };
-            });
-          }).then(function (pack) {
-            if (pack.res.ok && pack.json && pack.json.ok) {
-              veil.classList.add('on');
-              window.setTimeout(function () {
-                location.replace(pack.json.next || next);
-              }, 480);
-              return;
-            }
-            // Wrong password — ease back in
-            busy = false;
-            btn.disabled = false;
-            body.classList.remove('is-leaving');
-            err.textContent = 'Wrong password. Try again.';
-            card.classList.remove('is-shake');
-            void card.offsetWidth;
-            card.classList.add('is-shake');
-            document.getElementById('password').focus();
-            document.getElementById('password').select();
-          }).catch(function () {
-            // Network / no-JS path fallback
-            form.submit();
-          });
-        }, 280);
-      });
-    })();
-  </script>
 </body>
 </html>`;
 
